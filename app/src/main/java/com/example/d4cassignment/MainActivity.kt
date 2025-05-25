@@ -19,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -46,10 +48,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ShopScreen() {
     var currentScreen by remember { mutableStateOf(Screen.Shop) }
-    var cartItems by remember { mutableStateOf(mutableMapOf<String, CartItem>()) }
-    var wishlistItems by remember { mutableStateOf(mutableMapOf<String, ProductData>()) }
+    val cartItems = remember { mutableStateMapOf<String, CartItem>() }
+    val wishlistItems = remember { mutableStateMapOf<String, ProductData>() }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    // Force recomposition when cart or wishlist changes
+    LaunchedEffect(cartItems.size, wishlistItems.size) {
+        // This will trigger recomposition when the maps change
+    }
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -65,7 +72,6 @@ fun ShopScreen() {
                     val key = product.brand
                     cartItems[key] = cartItems[key]?.copy(quantity = cartItems[key]!!.quantity + 1)
                         ?: CartItem(product, 1)
-                    cartItems = cartItems.toMutableMap()
                     scope.launch {
                         snackbarHostState.showSnackbar("Added to cart: ${product.brand}")
                     }
@@ -83,7 +89,6 @@ fun ShopScreen() {
                             snackbarHostState.showSnackbar("Added to wishlist: ${product.brand}")
                         }
                     }
-                    wishlistItems = wishlistItems.toMutableMap()
                 }
             )
             Screen.Cart -> CartScreen(
@@ -102,13 +107,10 @@ fun ShopScreen() {
                             snackbarHostState.showSnackbar("Updated quantity: ${item.product.brand}")
                         }
                     }
-                    cartItems = cartItems.toMutableMap()
                 },
                 onMoveToWishlist = { item ->
                     wishlistItems[item.product.brand] = item.product
                     cartItems.remove(item.product.brand)
-                    cartItems = cartItems.toMutableMap()
-                    wishlistItems = wishlistItems.toMutableMap()
                     scope.launch {
                         snackbarHostState.showSnackbar("Moved to wishlist: ${item.product.brand}")
                     }
@@ -122,14 +124,12 @@ fun ShopScreen() {
                     val key = product.brand
                     cartItems[key] = cartItems[key]?.copy(quantity = cartItems[key]!!.quantity + 1)
                         ?: CartItem(product, 1)
-                    cartItems = cartItems.toMutableMap()
                     scope.launch {
                         snackbarHostState.showSnackbar("Added to cart: ${product.brand}")
                     }
                 },
                 onRemoveFromWishlist = { product ->
                     wishlistItems.remove(product.brand)
-                    wishlistItems = wishlistItems.toMutableMap()
                     scope.launch {
                         snackbarHostState.showSnackbar("Removed from wishlist: ${product.brand}")
                     }
