@@ -4,30 +4,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.d4cassignment.data.CartItem
 import com.example.d4cassignment.data.ProductData
 import com.example.d4cassignment.ui.theme.D4CAssignmentTheme
@@ -44,6 +33,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
 @Composable
 fun ShopScreen() {
@@ -137,43 +128,4 @@ fun ShopScreen() {
             )
         }
     }
-}
-
-@Composable
-fun ShopContent(
-    modifier: Modifier = Modifier,
-    onNavigateToCart: () -> Unit,
-    onNavigateToWishlist: () -> Unit,
-    cartItems: Map<String, CartItem>,
-    wishlistItems: Map<String, ProductData>,
-    onAddToCart: (ProductData) -> Unit,
-    onToggleWishlist: (ProductData) -> Unit
-) {
-    val scrollState = rememberScrollState()
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Black)
-            .statusBarsPadding()
-            .verticalScroll(scrollState)
-    ) {
-        TopAppBar(
-            cartCount = cartItems.values.sumOf { it.quantity },
-            wishlistCount = wishlistItems.size,
-            onCartClick = onNavigateToCart,
-            onWishlistClick = onNavigateToWishlist
-        )
-
-        PromotionalBanner()
-        CategoriesSection()
-        NewProductsSection(
-            cartItems = cartItems,
-            wishlistItems = wishlistItems,
-            onAddToCart = onAddToCart,
-            onToggleWishlist = onToggleWishlist
-        )
-    }
-}
-
-
+} 
