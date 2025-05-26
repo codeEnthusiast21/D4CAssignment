@@ -46,7 +46,6 @@ fun ShopScreen() {
 
     // Force recomposition when cart or wishlist changes
     LaunchedEffect(cartItems.size, wishlistItems.size) {
-        // This will trigger recomposition when the maps change
     }
 
     Scaffold(

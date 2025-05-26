@@ -7,6 +7,13 @@ fun getCategoryItems() = listOf(
     CategoryData("Cleanser"),
     CategoryData("Toner"),
     CategoryData("Serums"),
-    CategoryData("Moisturizers"),
-    CategoryData("Sunscreen")
+    CategoryData("Moisturizer"),
+    CategoryData("Sunscreen"),
+    CategoryData("Face Mask"),
+    CategoryData("Eye Cream"),
+    CategoryData("Face Oil"),
+    CategoryData("Exfoliator"),
+    CategoryData("Face Mist"),
+    CategoryData("Lip Care"),
+    CategoryData("Face Wash")
 )

@@ -3,7 +3,6 @@ package com.example.d4cassignment
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,6 +53,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -70,6 +71,19 @@ import com.example.d4cassignment.data.getCategoryItems
 import com.example.d4cassignment.data.getProductItems
 import kotlinx.coroutines.delay
 
+// fonts
+private val centuryOldStyle = FontFamily(
+    Font(R.font.century_old_style_std_bold)
+)
+
+private val tangerine = FontFamily(
+    Font(R.font.tangerine)
+)
+
+private val neuzeitSlt = FontFamily(
+    Font(R.font.neuzeitsltstd_book)
+)
+
 @Composable
 fun TopAppBar(
     cartCount: Int,
@@ -80,7 +94,7 @@ fun TopAppBar(
 ) {
     Row(
         modifier = modifier
-            .background(Color(0xFF1E1E1E))  // Match the background color
+            .background(Color(0xFF1E1E1E))
             .padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -97,7 +111,8 @@ fun TopAppBar(
                 text = "Shop",
                 color = Color.White,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                fontFamily = centuryOldStyle
             )
         }
 
@@ -179,7 +194,7 @@ fun PromotionalBanner() {
     // Auto scroll effect
     LaunchedEffect(pagerState) {
         while (true) {
-            delay(3000) // 3 seconds delay
+            delay(3000)
             val nextPage = (pagerState.currentPage + 1) % bannerItems.size
             pagerState.animateScrollToPage(nextPage)
         }
@@ -232,7 +247,7 @@ fun BannerItem(banner: BannerData) {
         ) {
             // Background PNG
             Image(
-                painter = painterResource(id = R.drawable.banner_card),  // Make sure to use the PNG version
+                painter = painterResource(id = R.drawable.banner_card),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds
@@ -299,8 +314,9 @@ fun CategoriesSection() {
             Text(
                 text = "Categories",
                 color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
+                fontSize = 26.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = centuryOldStyle
             )
             Text(
                 text = "See all",
@@ -327,7 +343,7 @@ fun CategoriesSection() {
 fun CategoryItem(category: CategoryData) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(60.dp)
+        modifier = Modifier.width(70.dp)
     ) {
         Box(
             modifier = Modifier
@@ -338,10 +354,17 @@ fun CategoryItem(category: CategoryData) {
             Image(
                 painter = painterResource(id = when (category.name.lowercase()) {
                     "sunscreen" -> R.drawable.categorysample
-                    "serums" -> R.drawable.categorysample
+                    "serums" -> R.drawable.product_image
                     "toner" -> R.drawable.categorysample
-                    "cleanser" -> R.drawable.categorysample
-                    else -> R.drawable.categorysample
+                    "cleanser" -> R.drawable.product_image
+                    "face mask" -> R.drawable.categorysample
+                    "eye cream" -> R.drawable.product_image
+                    "face oil" -> R.drawable.categorysample
+                    "exfoliator" -> R.drawable.product_image
+                    "face mist" -> R.drawable.categorysample
+                    "lip care" -> R.drawable.product_image
+                    "face wash" -> R.drawable.categorysample
+                    else -> R.drawable.product_image
                 }),
                 contentDescription = "${category.name} category icon",
                 modifier = Modifier
@@ -354,10 +377,11 @@ fun CategoryItem(category: CategoryData) {
         Text(
             text = category.name,
             color = Color.White,
-            fontSize = 12.sp,
+            fontSize = 10.sp,
             textAlign = TextAlign.Center,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            fontFamily = neuzeitSlt
         )
     }
 }
@@ -375,9 +399,8 @@ fun ShopContent(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF1E1E1E))  // Lighter black background
+            .background(Color(0xFF1E1E1E))
     ) {
-        // Fixed TopAppBar
         TopAppBar(
             cartCount = cartItems.values.sumOf { it.quantity },
             wishlistCount = wishlistItems.size,
@@ -388,11 +411,11 @@ fun ShopContent(
                 .align(Alignment.TopCenter)
         )
 
-        // Scrollable content
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 56.dp)  // Height of TopAppBar
+                .padding(top = 56.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             PromotionalBanner()
@@ -427,8 +450,9 @@ fun NewProductsSection(
             Text(
                 text = "New products",
                 color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
+                fontSize = 26.sp,
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = centuryOldStyle
             )
             Text(
                 text = "See all",
@@ -473,7 +497,6 @@ fun ProductCard(
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Background Image
             Image(
                 painter = painterResource(id = R.drawable.product_item_bg),
                 contentDescription = null,
@@ -481,7 +504,7 @@ fun ProductCard(
                 contentScale = ContentScale.FillBounds
             )
 
-            // Wishlist icon at top left with circular background
+            // Wishlist icon
             Box(
                 modifier = Modifier
                     .align(Alignment.TopStart)
@@ -506,15 +529,15 @@ fun ProductCard(
                     .height(480.dp)
                     .align(Alignment.TopCenter)
             ) {
-                // Product Image
+
                 Image(
-                    painter = painterResource(id = R.drawable.product_image),
+                    painter = painterResource(id = product.imageResId),
                     contentDescription = "Product Image",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Fit
                 )
 
-                // Best seller badge with oval background
+                // Best seller badge
                 if (product.isBestSeller) {
                     Box(
                         modifier = Modifier
@@ -533,13 +556,13 @@ fun ProductCard(
                 }
             }
 
-            // Black Shape Card with Text
+            // Black Shape Card
             Box(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)  // 90% of card width
+                    .fillMaxWidth(0.9f)
                     .height(160.dp)
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp)  // Add some bottom padding
+                    .padding(bottom = 16.dp)
             ) {
                 // Black Shape Background
                 Image(
@@ -549,7 +572,7 @@ fun ProductCard(
                     contentScale = ContentScale.FillBounds
                 )
 
-                // Content on Black Shape
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -562,7 +585,8 @@ fun ProductCard(
                             text = product.brand,
                             color = Color(0xFF9CFF2E),
                             fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = tangerine
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Box(
@@ -577,7 +601,8 @@ fun ProductCard(
                         Text(
                             text = if (product.inStock) "In stock" else "Out of stock",
                             color = if (product.inStock) Color(0xFF9CFF2E) else Color.Red,
-                            fontSize = 10.sp
+                            fontSize = 10.sp,
+                            fontFamily = neuzeitSlt
                         )
                     }
 
@@ -586,7 +611,8 @@ fun ProductCard(
                         color = Color.White,
                         fontSize = 12.sp,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
+                        fontFamily = neuzeitSlt
                     )
 
                     Row(
@@ -601,23 +627,25 @@ fun ProductCard(
                                 text = "RS. ${product.currentPrice}",
                                 color = Color.White,
                                 fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
+                                fontFamily = neuzeitSlt
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
                                 text = "RS. ${product.originalPrice}",
                                 color = Color.Gray,
                                 fontSize = 12.sp,
-                                textDecoration = TextDecoration.LineThrough
+                                textDecoration = TextDecoration.LineThrough,
+                                fontFamily = neuzeitSlt
                             )
                         }
 
-                        // Add to cart button with cart icon and border
+                        // Add to cart button
                         Surface(
                             modifier = Modifier
                                 .offset(x = 14.dp, y = 32.dp)
                                 .size(52.dp)
-                                .aspectRatio(1f)  // Force 1:1 aspect ratio
+                                .aspectRatio(1f)
                                 .clickable { onAddToCart() },
                             shape = CircleShape,
                             color = Color.Transparent,
@@ -652,7 +680,7 @@ fun CartScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF1E1E1E))  // Lighter black background
+            .background(Color(0xFF1E1E1E))
     ) {
         // Header
         Row(
@@ -674,7 +702,8 @@ fun CartScreen(
                 text = "Cart (${cartItems.sumOf { it.quantity }})",
                 color = Color.White,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                fontFamily = neuzeitSlt
             )
         }
 
@@ -723,7 +752,7 @@ fun CartScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Button(
-                        onClick = { /* Handle checkout */ },
+                        onClick = { /* nothing implemented yet */},
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9CFF2E))
                     ) {
@@ -747,13 +776,13 @@ fun CartItemCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A))  // Lighter card background
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Product Image Placeholder
+            // Product Image
             Box(
                 modifier = Modifier
                     .size(60.dp)
@@ -796,7 +825,7 @@ fun CartItemCard(
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                // Quantity Controls
+                // Quantity
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -854,9 +883,8 @@ fun WishlistScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xFF1E1E1E))  // Lighter black background
+            .background(Color(0xFF1E1E1E))
     ) {
-        // Header
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -876,7 +904,8 @@ fun WishlistScreen(
                 text = "Wishlist (${wishlistItems.size})",
                 color = Color.White,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                fontFamily = neuzeitSlt
             )
         }
 
@@ -916,13 +945,13 @@ fun WishlistItemCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A))  // Lighter card background
+        colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Product Image Placeholder
+            // Product Image
             Box(
                 modifier = Modifier
                     .size(60.dp)
@@ -995,10 +1024,10 @@ fun WishlistItemCard(
             Column(
                 horizontalAlignment = Alignment.End
             ) {
-                androidx.compose.material3.Button(
+                Button(
                     onClick = onAddToCart,
                     modifier = Modifier.padding(bottom = 8.dp),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = Color(0xFF9CFF2E))
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF9CFF2E))
                 ) {
                     Text(
                         text = "Add to Cart",
@@ -1007,7 +1036,7 @@ fun WishlistItemCard(
                         fontWeight = FontWeight.Medium
                     )
                 }
-                androidx.compose.material3.TextButton(
+                TextButton(
                     onClick = onRemove
                 ) {
                     Text(

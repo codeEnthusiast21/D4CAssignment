@@ -1,5 +1,7 @@
 package com.example.d4cassignment.data
 
+import com.example.d4cassignment.R
+
 data class ProductData(
     val brand: String,
     val description: String,
@@ -9,7 +11,8 @@ data class ProductData(
     val reviewCount: Int,
     val inStock: Boolean,
     val isBestSeller: Boolean,
-    val isFavorite: Boolean
+    val isFavorite: Boolean,
+    val imageResId: Int
 )
 
 fun getProductItems() = listOf(
@@ -22,7 +25,8 @@ fun getProductItems() = listOf(
         reviewCount = 249,
         inStock = true,
         isBestSeller = true,
-        isFavorite = true
+        isFavorite = true,
+        imageResId = R.drawable.product_image
     ),
     ProductData(
         brand = "glow",
@@ -33,7 +37,8 @@ fun getProductItems() = listOf(
         reviewCount = 249,
         inStock = true,
         isBestSeller = false,
-        isFavorite = false
+        isFavorite = false,
+        imageResId = R.drawable.categorysample
     ),
     ProductData(
         brand = "afterglow",
@@ -44,6 +49,7 @@ fun getProductItems() = listOf(
         reviewCount = 249,
         inStock = false,
         isBestSeller = false,
-        isFavorite = false
+        isFavorite = false,
+        imageResId = R.drawable.product_image
     )
 )
