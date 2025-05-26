@@ -503,15 +503,15 @@ fun ProductCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp)
+                    .height(480.dp)
                     .align(Alignment.TopCenter)
             ) {
-                // Product Image Placeholder (replace with actual product image)
-                Text(
-                    text = "// ${product.brand.uppercase()} PRODUCT IMAGE",
-                    color = Color.Gray,
-                    modifier = Modifier.align(Alignment.Center),
-                    textAlign = TextAlign.Center
+                // Product Image
+                Image(
+                    painter = painterResource(id = R.drawable.product_image),
+                    contentDescription = "Product Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit
                 )
 
                 // Best seller badge with oval background
@@ -615,7 +615,7 @@ fun ProductCard(
                         // Add to cart button with cart icon and border
                         Surface(
                             modifier = Modifier
-                                .padding(top = 42.dp, start = 90.dp)
+                                .offset(x = 14.dp, y = 32.dp)
                                 .size(52.dp)
                                 .aspectRatio(1f)  // Force 1:1 aspect ratio
                                 .clickable { onAddToCart() },
